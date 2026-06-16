@@ -7,5 +7,5 @@ func Sumar(a, b int) int {
 }
 
 func main() {
-	fmt.Println("La suma de 2 + 3 en Go es:", Sumar(2, 3))
+	fmt.Println("La suma de 2 + 3 en Go es:", Sumar(5, 5))
 }
