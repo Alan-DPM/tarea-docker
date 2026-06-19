@@ -1,7 +1,10 @@
-name: Pruebas Go
+name: Validar Compilación y Docker
+
 on: [push]
+
 jobs:
-  test:
+  test-go:
+    name: Comprobación de compilación de código
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -11,6 +14,22 @@ jobs:
     - uses: actions/setup-go@v4
       with:
         go-version: '1.22'
-    - name: Correr Pruebas
+    - name: Pruebas unitarias
       run: go test -cover
-      
+
+  docker-build-check:
+    name: Comprobación con docker/build y docker/bake
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v3
+
+      - name: Configurar Docker Buildx (Herramienta de Bake y Build)
+        uses: docker/setup-buildx-action@v3
+
+      - name: Validación de compilación (docker/build)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend-go
+          push: false # Solo comprueba que compila, no la sube (validación)
+          tags: alandpm/app-go:test
